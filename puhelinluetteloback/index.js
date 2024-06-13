@@ -33,6 +33,7 @@ let persons = [
   
 ]
 
+// porttijutut
 const cors = require('cors')
 
 app.use(cors())
@@ -40,6 +41,9 @@ app.use(cors())
 
 
 app.use(express.json())
+
+// frontin muutokset?
+app.use(express.static('dist'))
 
 // morgan
 
