@@ -55,8 +55,8 @@ app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: 'content missing'
+    return response.status(400).json({ 
+      error: 'content missing' 
     })
   }
 
@@ -90,18 +90,13 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
     .then(result => {
-      if (result) {
-        response.status(204).end()
-      } else {
-        response.status(404).send({ error: 'Person not found' })
-      }
+      response.status(204).end()
     })
     .catch(error => next(error))
 })
 
-
 /// infosivu
-app.get('/info', (response) => {
+app.get('/info', (request, response) => {
   Person.countDocuments({})
     .then(count => {
       const now = new Date()
@@ -137,4 +132,3 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
-

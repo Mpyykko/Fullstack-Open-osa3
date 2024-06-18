@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import personService from './services/personService';
+
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+
   const [notification, setNotification] = useState({ message: null, type: '' });
 
   const showMessage = (msg, type) => {
@@ -44,26 +46,25 @@ const App = () => {
     setFilter(event.target.value);
   };
 
-  const isValidPhoneNumber = str => {
-    const regex = /^(?:\d{2,3})-\d{5,}$/;
-    return regex.test(str);
-  };
-
   const addPerson = event => {
     event.preventDefault();
 
-    if (newName.length < 3) {
-      showMessage('Name must be at least 3 characters', 'error');
+    if (newName.trim() === '') {
+      alert('Name cannot be empty');
       return;
     }
 
     if (newNumber.trim() === '') {
-      showMessage('Number cannot be empty', 'error');
+      alert('Number cannot be empty');
       return;
     }
 
-    if (!isValidPhoneNumber(newNumber)) {
-      showMessage('Check the phone number. Format should be XX-XXXXXXX or XXX-XXXXXXXX.', 'error');
+    const isNumeric = str => {
+      return /^[-\d\s]+$/.test(str);
+    };
+
+    if (!isNumeric(newNumber)) {
+      alert('Check the phone number');
       return;
     }
 
@@ -118,6 +119,7 @@ const App = () => {
           showMessage('Person deleted successfully!', 'success');
         })
         .catch(error => {
+          console.log('Error deleting person:', error);
           showMessage('Failed to delete person', 'error');
         });
     }
