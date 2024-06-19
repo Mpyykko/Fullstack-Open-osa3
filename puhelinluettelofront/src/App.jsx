@@ -46,16 +46,24 @@ const App = () => {
     setFilter(event.target.value);
   };
 
+
+
+
   const addPerson = event => {
     event.preventDefault();
 
     if (newName.trim() === '') {
-      alert('Name cannot be empty');
+      showMessage('Name cannot be empty','error');
+      return;
+    }
+
+    if (newName.trim().length <3) {
+      showMessage('Name must be at least 3 characters','error');
       return;
     }
 
     if (newNumber.trim() === '') {
-      alert('Number cannot be empty');
+      showMessage('Number cannot be empty','error');
       return;
     }
 
@@ -64,11 +72,24 @@ const App = () => {
     };
 
     if (!isNumeric(newNumber)) {
-      alert('Check the phone number');
+      showMessage('Check the phone number','error');
       return;
     }
 
-    showMessage('Processing...', 'info');
+    const isValidPhoneNumber = str => {
+      const regex = /^\d{2,3}-\d+$/
+      if (!regex.test(str)) return false
+  
+     
+      return str.replace('-', '').length >= 8
+    }
+  
+    if (!isValidPhoneNumber(newNumber)) {
+      showMessage('Phone number must be in the format XX-XXXXXXX or XXX-XXXXXXX and must contain at least 8 characters','error')
+      return
+    }
+
+  
 
     const existingPerson = persons.find(person => person.name === newName);
 
